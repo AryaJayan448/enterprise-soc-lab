@@ -20,3 +20,13 @@ The architecture diagrams are available in the **/architecture** folder. These d
 * Learned the fundamentals of SOC, SIEM, Microsoft  Sentinel, and Splunk.
 * Designed the initial SOC architecture diagram.
 * Created the project documentation and README.
+
+### Day 2
+* Learned virtualization fundamentals (hypervisors, Type 1 vs Type 2, snapshots)
+* Installed UTM (ARM-native hypervisor for Apple Silicon)
+* Downloaded Windows 11 ARM64 ISO
+
+### Day 3
+* Created Windows 11 Pro VM in UTM (4GB RAM, 2 CPU cores, 64GB dynamic disk)
+* Troubleshot UEFI boot process and disk partitioning issues
+* First lab endpoint online
