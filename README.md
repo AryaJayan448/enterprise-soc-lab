@@ -30,3 +30,9 @@ The architecture diagrams are available in the **/architecture** folder. These d
 * Created Windows 11 Pro VM in UTM (4GB RAM, 2 CPU cores, 64GB dynamic disk)
 * Troubleshot UEFI boot process and disk partitioning issues
 * First lab endpoint online
+
+### Day 4
+* Attempted Ubuntu 26.04 LTS — hit a reproducible TPM firmware assertion crash in UTM
+* Diagnosed as a version-specific compatibility bug; switched to Ubuntu 24.04.4 LTS
+* Successfully installed Ubuntu Server with OpenSSH, second lab endpoint online
+* IP noted for future SSH access
