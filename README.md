@@ -36,3 +36,8 @@ The architecture diagrams are available in the **/architecture** folder. These d
 * Diagnosed as a version-specific compatibility bug; switched to Ubuntu 24.04.4 LTS
 * Successfully installed Ubuntu Server with OpenSSH, second lab endpoint online
 * IP noted for future SSH access
+
+### Day 5
+* Installed Sysmon (ARM64 build) on the Windows 11 VM with the SwiftOnSecurity config
+* Diagnosed a driver-load failure caused by using the x64 binary on an ARM64 system
+* Verified Sysmon Event ID 1 (Process Create) logging for whoami.exe
