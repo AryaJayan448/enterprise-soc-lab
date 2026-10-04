@@ -6,7 +6,7 @@ This project is about building an Enterprise Security Operations Center (SOC) la
 
 ## Status
 
-**Day 1 of approximately 40–50** — Project planning and architecture design completed. Environment setup and implementation begins on Day 2.
+**Current Status: Day 6 — Windows and Linux VMs built, Sysmon installed, and logging and SIEM setup in progress.
 
 ## Architecture
 
