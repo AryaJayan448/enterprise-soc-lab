@@ -41,3 +41,8 @@ The architecture diagrams are available in the **/architecture** folder. These d
 * Installed Sysmon (ARM64 build) on the Windows 11 VM with the SwiftOnSecurity config
 * Diagnosed a driver-load failure caused by using the x64 binary on an ARM64 system
 * Verified Sysmon Event ID 1 (Process Create) logging for whoami.exe
+
+### Day 6
+* Enabled Windows audit policy: Process Creation (with command line) and PowerShell Script Block Logging
+* Found and fixed Logon auditing being reset to "No Auditing" after a policy change
+* Generated failed logons and analysed Event ID 4625 fields
