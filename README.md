@@ -6,7 +6,7 @@ This project is about building an Enterprise Security Operations Center (SOC) la
 
 ## Status
 
-**Current Status: Day 6 — Windows and Linux VMs built, Sysmon installed, and logging and SIEM setup in progress.
+**Current Status:** Day 6 — Windows and Linux VMs built, Sysmon installed, and logging and SIEM setup in progress.
 
 ## Architecture
 
