@@ -46,3 +46,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 * Enabled Windows audit policy: Process Creation (with command line) and PowerShell Script Block Logging
 * Found and fixed Logon auditing being reset to "No Auditing" after a policy change
 * Generated failed logons and analysed Event ID 4625 fields
+
+### Day 7
+* Installed and enabled the OpenSSH server on the Ubuntu VM and connected over SSH
+* Generated failed SSH logins and analysed "Failed password" and "Invalid user" events in /var/log/auth.log
