@@ -50,3 +50,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 7
 * Installed and enabled the OpenSSH server on the Ubuntu VM and connected over SSH
 * Generated failed SSH logins and analysed "Failed password" and "Invalid user" events in /var/log/auth.log
+
+### Day 8
+* Researched SIEM options: Splunk Enterprise has no ARM64 build, so chose Microsoft Sentinel first
+* Created Azure free account, resource group, budget alert and Log Analytics workspace with Sentinel enabled
