@@ -54,3 +54,8 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 8
 * Researched SIEM options: Splunk Enterprise has no ARM64 build, so chose Microsoft Sentinel first
 * Created Azure free account, resource group, budget alert and Log Analytics workspace with Sentinel enabled
+
+### Day 9
+* Connected the Ubuntu VM to Azure Arc and the Azure Monitor Agent (Linux ARM64 supported)
+* Sent Syslog events to the Sentinel workspace and queried failed SSH logins in KQL
+* Found and removed an extra data source in a data collection rule that collected unintended facilities
