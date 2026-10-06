@@ -1,4 +1,4 @@
-# Day 9
+##Day 9
 
 Today i worked on connecting my Ubuntu VM to Microsoft Sentinel and sending Linux SSH logs to Azure.
 
@@ -32,7 +32,9 @@ The portal checkboxes looked unticked, which was misleading. I checked the JSON 
 
 I fixed this in the JSON code editor by removing the extra data source block.
 
-I still need to re-check that `daemon` and `cron` stopped arriving after the change.
+After the change, i re-checked the logs. `daemon` last arrived at **16:18:58 UTC** and `cron` at **16:17:01 UTC**, and neither updated again while `authpriv` kept advancing at **16:25:01** and then **16:35:01 UTC**.
+
+The JSON edit confirmed that the extra data source was removed, and the data showed that the unwanted `daemon` and `cron` facilities stopped arriving.
 
 ### Cost controls
 
@@ -56,3 +58,6 @@ The portal UI is not always enough. I need to check the JSON configuration and q
 
 This is similar to what i learned on Day 6 with `auditpol`. The setting shown in the UI is not proof that the logging is actually working. I need to check the real configuration and the logs.
 
+### Open item
+
+I still need to complete the `auth` test with fresh failed SSH logins and re-check the results after waiting 5 minutes.
