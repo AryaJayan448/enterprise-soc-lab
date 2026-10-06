@@ -1,4 +1,4 @@
-##Day 9
+# Day 9
 
 Today i worked on connecting my Ubuntu VM to Microsoft Sentinel and sending Linux SSH logs to Azure.
 
@@ -50,6 +50,18 @@ I used `has_any` to find the failed SSH login messages.
 
 This helped me find the failed SSH login events in Sentinel and practise searching the logs with KQL.
 
+### Final check
+
+I ran the fresh failed SSH login test and checked the data again.
+
+The `auth` logs jumped to **16:53:25 UTC** after the new failed logins, with **18 new rows**. `authpriv` was also still flowing and reached **16:52:55 UTC**.
+
+The unwanted `daemon` logs stayed at **16:18:58 UTC**, with **1,473 rows**, and `cron` stayed at **16:17:01 UTC**, with **20 rows**.
+
+This confirmed that the rule is collecting the data i intended. The `auth` and `authpriv` logs keep flowing and pick up new SSH events, while `daemon` and `cron` stay stopped.
+
+The pipeline is working end to end.
+
 ### What i learned
 
 The main lesson today was to verify what is actually configured and what is actually being ingested.
@@ -58,6 +70,4 @@ The portal UI is not always enough. I need to check the JSON configuration and q
 
 This is similar to what i learned on Day 6 with `auditpol`. The setting shown in the UI is not proof that the logging is actually working. I need to check the real configuration and the logs.
 
-### Open item
-
-I still need to complete the `auth` test with fresh failed SSH logins and re-check the results after waiting 5 minutes.
+Today i also learned that controlling the data sources is important because collecting unnecessary logs can increase the amount of data sent to the cloud SIEM and affect costs.
