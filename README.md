@@ -63,3 +63,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 10
 * Wrote and tuned a KQL detection for SSH brute force (T1110.001) and created a Sentinel scheduled analytics rule
 * Triggered the rule with a simulated attack and reviewed the resulting incidents (classified as benign true positive)
+
+### Day 11
+* Simulated an SSH brute-force attack from a separate host and investigated the resulting Sentinel incident
+* Classified it as benign positive (security testing) and wrote incident report IR-001
