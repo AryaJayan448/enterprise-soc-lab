@@ -1,0 +1,18 @@
+// Name: SSH Brute Force - Repeated Failed Logins From One Source
+// Data source: Linux Syslog (auth/authpriv) via Azure Monitor Agent -> Syslog table
+// MITRE ATT&CK: T1110 Brute Force, T1110.001 Password Guessing (Credential Access)
+// Logic: 5 or more "Failed password" lines from one source IP within the rule's 10-minute lookback
+// Schedule: runs every 5 minutes, looks back 10 minutes
+// Known false positives: a user mistyping a password across several attempts; automation with a stale password
+// Known limitations:
+//  - rsyslog can collapse repeats into "message repeated N times", so count() may under-count a burst
+//  - alerts for the same burst may repeat across overlapping runs (candidate for alert grouping/suppression)
+//  - fixed in this version: matching only ProcessName == "sshd" (an earlier version counted sudo lines
+//    that contained the text "Failed password"), no bin() window, and the IP pattern now accepts IPv6
+Syslog
+| where ProcessName == "sshd"
+| where SyslogMessage has "Failed password"
+| extend SourceIP = extract(@"from (\S+) port", 1, SyslogMessage)
+| extend TargetUser = extract(@"Failed password for (?:invalid user )?(\S+) from", 1, SyslogMessage)
+| summarize Failures = count(), Users = make_set(TargetUser), FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated) by SourceIP
+| where Failures >= 5
