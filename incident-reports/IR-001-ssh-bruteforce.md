@@ -55,7 +55,7 @@ The logs also do not show exactly what commands were run during the successful S
 
 ## 6. Verdict
 
-**Classification: Informational, expected activity (Security testing)**
+**Classification: Benign Positive (Defender: Informational, expected activity, Security testing)**
 **Status: Resolved**
 
 The rule condition was met because there were **8 counted failed login events from one IP within 10 minutes**.
