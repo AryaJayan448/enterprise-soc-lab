@@ -59,3 +59,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 * Connected the Ubuntu VM to Azure Arc and the Azure Monitor Agent (Linux ARM64 supported)
 * Sent Syslog events to the Sentinel workspace and queried failed SSH logins in KQL
 * Found and removed an extra data source in a data collection rule that collected unintended facilities
+
+### Day 10
+* Wrote and tuned a KQL detection for SSH brute force (T1110.001) and created a Sentinel scheduled analytics rule
+* Triggered the rule with a simulated attack and reviewed the resulting incidents (classified as benign true positive)
