@@ -1,0 +1,5 @@
+// Rule: Linux - Suspicious sudo command (credential files / root shell)
+// MITRE: T1548.003 Sudo and Sudo Caching (Privilege Escalation)
+// Schedule: every 5 min, lookback 15 min | Severity: Medium
+// Entities: Account = SudoUser, Host = Computer
+Syslog | where ingestion_time() > ago(5m) | where ProcessName == "sudo" | where SyslogMessage has "COMMAND=" | extend SudoUser = extract(@"^\s*(\S+)\s*:", 1, SyslogMessage) | extend Command = extract(@"COMMAND=(.*)$", 1, SyslogMessage) | where Command matches regex @"/etc/(shadow|sudoers|passwd)|useradd|usermod|chpasswd|visudo|^/(usr/)?bin/(ba|da)?sh( |$)|^/(usr/)?bin/su( |$)" | project TimeGenerated, Computer, SudoUser, Command

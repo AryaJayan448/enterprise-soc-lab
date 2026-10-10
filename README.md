@@ -71,3 +71,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 12
 * Built a "SSH login success after repeated failures" correlation detection (KQL join, T1110.001 / T1078) and tested it with a simulated attack
 * Investigated the resulting incident, found duplicate alerts from overlapping lookback windows and recorded tuning follow-ups
+
+### Day 13
+* Built a Linux sudo-abuse detection (T1548.003) for sudo commands touching /etc/shadow, /etc/sudoers or starting a root shell, and tested it with safe commands
+* Found the rule created 6 incidents from 2 events because of overlapping lookback windows; fixed it with an ingestion_time() filter (retest: 1 incident from 1 event)
