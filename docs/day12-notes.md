@@ -14,7 +14,7 @@ At first, the query matched old data and returned 3 matches: one from 7 October 
 
 ## 4. What I observed in the results
 
-The new rule had about 8 minutes of latency: the successful login happened at 18:36 UTC and the incident was created at 18:44 UTC. This was faster than the failures-only rule, which took about 13 minutes. One successful login produced 3 alerts and then 4 because the scheduled rule used overlapping lookback windows, but alert grouping merged them into one incident. The old rule did not have grouping and created duplicate incidents 6 and 8, so both rules firing on the same attack resulted in two separate incidents.
+In the same run, the failures-only rule created its incident at 18:42:29 UTC, and the correlation rule created its incident at 18:44:21 UTC, about 2 minutes later. This makes sense because the correlation rule also needs the successful login event to be ingested. My Day 11 latency of 13 minutes was from a different run, so latency can vary depending on schedule timing and ingestion delay. One measurement isn't enough to compare the rules fairly.
 
 ## 5. What I closed and why
 
