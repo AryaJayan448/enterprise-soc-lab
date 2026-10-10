@@ -1,0 +1,21 @@
+// Name: SSH Login Success After Repeated Failures
+// Data source: Linux Syslog (auth/authpriv) via Azure Monitor Agent -> Syslog table
+// MITRE ATT&CK: T1110.001 Password Guessing (Credential Access), T1078 Valid Accounts (Initial Access)
+// Logic: a successful SSH password login within 10 minutes after 3 or more failed attempts
+//        from the same source IP against the same account
+// Schedule: runs every 5 minutes, looks back 20 minutes (the lookback must cover the 10-minute pattern)
+// Severity: High
+// Entities: IP (SourceIP), Account (TargetUser)
+// Known false positives: a user who mistypes their password a few times and then logs in correctly
+// Known limitations:
+//  - the overlapping 20-minute lookback re-detects the same event; one login produced 3 alerts,
+//    which alert grouping merged into 1 incident (fix: filter successes on ingestion_time())
+//  - rsyslog can collapse repeats into "message repeated N times", so count() may under-count
+//  - password logins only; SSH key logins are not covered
+let failures = Syslog | where ProcessName == "sshd" | where SyslogMessage has "Failed password" | extend SourceIP = extract(@"from (\S+) port", 1, SyslogMessage) | extend TargetUser = extract(@"Failed password for (?:invalid user )?(\S+) from", 1, SyslogMessage) | project FailureTime = TimeGenerated, SourceIP, TargetUser;
+let successes = Syslog | where ProcessName == "sshd" | where SyslogMessage has "Accepted password" | extend SourceIP = extract(@"from (\S+) port", 1, SyslogMessage) | extend TargetUser = extract(@"Accepted password for (\S+) from", 1, SyslogMessage) | project SuccessTime = TimeGenerated, SourceIP, TargetUser;
+successes
+| join kind=inner failures on SourceIP, TargetUser
+| where FailureTime < SuccessTime and FailureTime > SuccessTime - 10m
+| summarize Failures = count() by SuccessTime, SourceIP, TargetUser
+| where Failures >= 3
