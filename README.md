@@ -67,3 +67,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 11
 * Simulated an SSH brute-force attack from a separate host and investigated the resulting Sentinel incident
 * Classified it as benign positive (security testing) and wrote incident report IR-001
+
+### Day 12
+* Built a "SSH login success after repeated failures" correlation detection (KQL join, T1110.001 / T1078) and tested it with a simulated attack
+* Investigated the resulting incident, found duplicate alerts from overlapping lookback windows and recorded tuning follow-ups
