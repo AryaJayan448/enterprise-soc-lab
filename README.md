@@ -79,3 +79,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 14
 * Connected a Windows 11 ARM64 VM to Sentinel with the Azure Monitor Agent client installer (the Arc agent doesn't support ARM64 Windows) and verified Security, Sysmon and PowerShell events
 * Investigated why only 1 of 6 test failed logons arrived (events before the DCR was applied are not back-filled) and confirmed with a retest
+
+### Day 15
+* Built two Windows detections on Sentinel: repeated failed logons (T1110.001) and new local user added to Administrators (T1136.001 / T1098, joined on SID)
+* Fixed missing account-management events (audit policy), measured detection latency, and found that alert grouping merged duplicates for one rule but not the other
