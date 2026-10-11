@@ -1,0 +1,30 @@
+{
+  "location": "northeurope",
+  "kind": "Windows",
+  "properties": {
+    "dataSources": {
+      "windowsEventLogs": [
+        {
+          "name": "SecurityEvents",
+          "streams": ["Microsoft-SecurityEvent"],
+          "xPathQueries": ["Security!*[System[(EventID=4624 or EventID=4625 or EventID=4688 or EventID=4719 or EventID=4720 or EventID=4732)]]"]
+        },
+        {
+          "name": "SysmonAndPowerShell",
+          "streams": ["Microsoft-Event"],
+          "xPathQueries": [
+            "Microsoft-Windows-Sysmon/Operational!*[System[(EventID=1 or EventID=3)]]",
+            "Microsoft-Windows-PowerShell/Operational!*[System[(EventID=4104)]]"
+          ]
+        }
+      ]
+    },
+    "destinations": {
+      "logAnalytics": [{"name": "law-soc-lab", "workspaceResourceId": "<workspace-resource-id>"}]
+    },
+    "dataFlows": [
+      {"streams": ["Microsoft-SecurityEvent"], "destinations": ["law-soc-lab"]},
+      {"streams": ["Microsoft-Event"], "destinations": ["law-soc-lab"]}
+    ]
+  }
+}
