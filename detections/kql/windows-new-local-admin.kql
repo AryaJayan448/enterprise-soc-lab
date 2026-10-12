@@ -1,0 +1,21 @@
+// Rule: Windows - New Local User Added to Administrators
+// MITRE: T1136.001 Create Account: Local Account (Persistence), T1098 Account Manipulation
+// Schedule: every 5 min, lookback 15 min | Severity: High
+// Entities: Account = NewAccount, Account = AddedBy, Host = Computer
+// Event grouping: alert per event | Incident grouping: match all entities, 5 h
+//
+// Notes:
+//  - 4732 records the new member by SID only (MemberName is "-"), so 4720 and 4732 are joined on SID.
+//  - The Administrators group is matched by its well-known SID S-1-5-32-544, not by name.
+//  - Windows also adds every new account to Users (S-1-5-32-545), producing a second 4732 event.
+//  - Requires auditing of User Account Management and Security Group Management.
+let created = SecurityEvent
+| where EventID == 4720
+| project CreatedTime = TimeGenerated, Computer, NewAccount = TargetUserName, MemberSid = TargetSid, Creator = SubjectUserName;
+SecurityEvent
+| where EventID == 4732
+| where TargetSid == "S-1-5-32-544"
+| project AddedTime = TimeGenerated, Computer, MemberSid, AddedBy = SubjectUserName
+| join kind=inner created on Computer, MemberSid
+| where AddedTime between (CreatedTime .. (CreatedTime + 10m))
+| project AddedTime, Computer, NewAccount, MemberSid, Creator, AddedBy

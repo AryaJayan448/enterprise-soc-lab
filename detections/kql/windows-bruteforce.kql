@@ -1,0 +1,18 @@
+// Rule: Windows - Repeated Failed Logons (Brute Force)
+// MITRE: T1110 Brute Force / T1110.001 Password Guessing (Credential Access)
+// Schedule: every 5 min, lookback 10 min | Severity: Medium
+// Entities: IP = IpAddress, Host = Computer
+// Incident settings: alert grouping on (match all entities, 5 h), suppression OFF
+//
+// Tuning history:
+//  - Original version (no LastIngested filter) created 2 alerts / 2 incidents per burst
+//    (10 min lookback / 5 min frequency = 2 runs saw the same burst).
+//  - Day 16: added the LastIngested filter below. 2 tests (8 failed logons each) produced
+//    1 alert and 1 incident each. Alerts arrived about 7-10 min after ingestion.
+//  - Not safe to use a plain ingestion_time() filter on the events (as the sudo rule does):
+//    the count must still use the whole lookback window, so only the trigger is gated.
+SecurityEvent
+| where EventID == 4625
+| summarize Failures = count(), Users = make_set(TargetUserName), FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated), LastIngested = max(ingestion_time()) by IpAddress, Computer
+| where Failures >= 5
+| where LastIngested > ago(5m)

@@ -83,3 +83,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 15
 * Built two Windows detections on Sentinel: repeated failed logons (T1110.001) and new local user added to Administrators (T1136.001 / T1098, joined on SID)
 * Fixed missing account-management events (audit policy), measured detection latency, and found that alert grouping merged duplicates for one rule but not the other
+
+### Day 16
+* Tuned the Windows brute-force rule (1 alert / 1 incident per burst in 2 tests), refuted the loopback-IP grouping hypothesis, and ran two Windows process hunts
+* Found command-line auditing was off and enabled it; built a 3-panel Sentinel workbook (incidents by detection, failed logons, log volume by source)
