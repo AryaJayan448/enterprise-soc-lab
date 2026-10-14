@@ -87,3 +87,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 16
 * Tuned the Windows brute-force rule (1 alert / 1 incident per burst in 2 tests), refuted the loopback-IP grouping hypothesis, and ran two Windows process hunts
 * Found command-line auditing was off and enabled it; built a 3-panel Sentinel workbook (incidents by detection, failed logons, log volume by source)
+
+### Day 17
+* Re-implemented four detections (Windows brute force, new local admin, SSH brute force, sudo abuse) in Splunk SPL on a Splunk Cloud trial, using CSV exports uploaded from Sentinel
+* Fixed export issues (date format, BOM) and a time-bucketing mistake; documented that this is a static import, not a live pipeline

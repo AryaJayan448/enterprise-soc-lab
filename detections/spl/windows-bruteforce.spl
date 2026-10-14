@@ -1,0 +1,12 @@
+// Splunk (SPL) equivalent of detections/kql/windows-bruteforce.kql
+// MITRE: T1110.001 Password Guessing
+// Data: win_4625.csv exported from Sentinel (SecurityEvent, EventID 4625), uploaded to Splunk Cloud trial, index=main
+// Note: fixed 10-minute buckets. A burst split across a bucket boundary (e.g. 4 + 4) would miss the threshold;
+//       the Sentinel rule uses a sliding lookback and would not.
+// Validated result: 4 buckets >= 5 failures (6, 8, 8, 8) - the same bursts found in Sentinel.
+index=main source="win_4625.csv" EventID=4625
+| eval EventT=_time
+| bin _time span=10m
+| stats count AS Failures, values(TargetUserName) AS Users, min(EventT) AS FirstSeen, max(EventT) AS LastSeen BY _time, IpAddress, Computer
+| where Failures >= 5
+| eval FirstSeen=strftime(FirstSeen,"%Y-%m-%d %H:%M:%S"), LastSeen=strftime(LastSeen,"%Y-%m-%d %H:%M:%S")

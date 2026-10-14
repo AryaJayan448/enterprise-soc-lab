@@ -1,0 +1,13 @@
+// Splunk (SPL) equivalent of detections/kql/windows-new-local-admin.kql
+// MITRE: T1136.001 Create Account: Local Account, T1098 Account Manipulation
+// Data: win_account.csv exported from Sentinel (SecurityEvent, EventID 4720 and 4732), index=main
+// Logic: 4732 records the member by SID only, so 4720 and 4732 are tied together on the account SID.
+//        The Administrators group is matched by its well-known SID S-1-5-32-544, not by name.
+//        An SID that has BOTH a 4720 and an 4732 (to Administrators) is a new account added to admins.
+// Validated result: 4 accounts (SIDs ending -1003 to -1006), one per test run.
+index=main source="win_account.csv"
+| where EventID=4720 OR (EventID=4732 AND TargetSid="S-1-5-32-544")
+| eval Sid=if(EventID=4720, TargetSid, MemberSid)
+| stats values(EventID) AS Events, values(TargetUserName) AS Names, min(_time) AS FirstSeen BY Sid, Computer
+| where mvcount(Events)=2
+| eval FirstSeen=strftime(FirstSeen,"%Y-%m-%d %H:%M:%S")

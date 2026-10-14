@@ -1,0 +1,11 @@
+// Splunk (SPL) equivalent of detections/kql/sudo-abuse.kql
+// MITRE: T1548.003 Sudo and Sudo Caching
+// Data: linux_ssh_sudo.csv exported from Sentinel (Syslog), index=main
+// Matches sudo commands that touch credential files / user management, or start a root shell.
+// Validated result: 6 rows - ls -l /etc/shadow x3, ls -l /etc/sudoers x1, /bin/bash x2 (the Day 13 tests).
+// Known gap (untested): relative paths (cd /etc && sudo ls -l shadow) log PWD= separately from COMMAND=.
+index=main source="linux_ssh_sudo.csv" ProcessName=sudo "COMMAND="
+| rex field=SyslogMessage "^\s*(?<SudoUser>\S+)\s*:"
+| rex field=SyslogMessage "COMMAND=(?<Command>.*)$"
+| regex Command="/etc/(shadow|sudoers|passwd)|useradd|usermod|chpasswd|visudo|^/(usr/)?bin/(ba|da)?sh( |$)|^/(usr/)?bin/su( |$)"
+| table _time, Computer, SudoUser, Command

@@ -1,0 +1,13 @@
+// Splunk (SPL) equivalent of detections/kql/ssh-bruteforce.kql
+// MITRE: T1110.001 Password Guessing
+// Data: linux_ssh_sudo.csv exported from Sentinel (Syslog, ProcessName sshd/sudo), index=main
+// Note: fixed 10-minute buckets (see windows-bruteforce.spl for the trade-off).
+// Validated result: 2 bursts of 8 failures from 192.168.64.1 (7 Oct and 8 Oct), the Day 10 and 11 attacks.
+index=main source="linux_ssh_sudo.csv" ProcessName=sshd "Failed password"
+| rex field=SyslogMessage "from (?<SourceIP>\S+) port"
+| rex field=SyslogMessage "Failed password for (?:invalid user )?(?<TargetUser>\S+) from"
+| eval EventT=_time
+| bin _time span=10m
+| stats count AS Failures, values(TargetUser) AS Users, min(EventT) AS FirstSeen, max(EventT) AS LastSeen BY _time, SourceIP
+| where Failures >= 5
+| eval FirstSeen=strftime(FirstSeen,"%Y-%m-%d %H:%M:%S"), LastSeen=strftime(LastSeen,"%Y-%m-%d %H:%M:%S")
