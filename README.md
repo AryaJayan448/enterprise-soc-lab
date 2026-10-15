@@ -91,3 +91,7 @@ The architecture diagrams are available in the **/architecture** folder. These d
 ### Day 17
 * Re-implemented four detections (Windows brute force, new local admin, SSH brute force, sudo abuse) in Splunk SPL on a Splunk Cloud trial, using CSV exports uploaded from Sentinel
 * Fixed export issues (date format, BOM) and a time-bucketing mistake; documented that this is a static import, not a live pipeline
+
+### Day 18
+* Wrote the MITRE ATT&CK coverage table and gap analysis (data-but-no-rule vs missing data), and the architecture diagram
+* Wrote incident report IR-002 for the Windows new-local-admin incident, with verified cleanup and incident resolution
